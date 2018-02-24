@@ -41,7 +41,7 @@ public class Main extends JavaPlugin{
         saveConfig();
 		I18n.run();
 		getCommand("dun").setExecutor(new CommandSpec());
-		getCommand("party").setExecutor(useExtPartyProvider ? new me.baks.PartySystem.Commands() : new PartyC());
+		getCommand("party").setExecutor(useExtPartyProvider ? new MixedPartyHandler() : new PartyC());
 		getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 		if(c.getBoolean("ScoreBoard",true)){
 			scoreboardEnable();
@@ -88,8 +88,8 @@ public class Main extends JavaPlugin{
 	}
 	
 	public void onDisable(){
-		for(Game G : GameUtil.Game){
-			G.Stop();
+		for(Game G : GameUtil.gameAll){
+			G.stop();
 		}
 	}
 	

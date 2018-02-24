@@ -1,6 +1,7 @@
 package io.jerry.dungeon.util;
 
 import com.google.common.collect.Lists;
+import io.jerry.dungeon.Main;
 import io.jerry.dungeon.Party;
 import io.jerry.dungeon.game.Game;
 import org.bukkit.Bukkit;
@@ -11,13 +12,14 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 
 public class GameUtil {
-	public static List<io.jerry.dungeon.game.Game> Game = new ArrayList<Game>();
-	private static HashMap<Player,String> select = new HashMap<Player,String>();	
-	private static HashMap<Player,String> select_End = new HashMap<Player,String>();
-	public static List<OfflinePlayer> ban = new ArrayList<OfflinePlayer>();
-	
+    public static List<io.jerry.dungeon.game.Game> gameAll = new ArrayList<Game>();
+    private static HashMap<Player, String> select = new HashMap<Player, String>();
+    private static HashMap<Player, String> select_End = new HashMap<Player, String>();
+    public static List<OfflinePlayer> ban = new ArrayList<OfflinePlayer>();
+
 //	public static boolean isInLocation(Location L, String Name){
 //		if(Main.c.get("Game." + Name + ".In") != null){
 //			if(!(L.getWorld().getName().equals(Main.c.getString("Game." + Name + ".In.W")) && 
@@ -31,94 +33,95 @@ public class GameUtil {
 //		return true;
 //	}
 
-	public static String getSelect(Player p) {
-		String str = select.get(p);
-		return str != null ? ConfigUtil.hasGame(str) ? str : null : null;
-	}
-	
-	public static String getSelectEnd(Player p) {
-		return select_End.get(p);
-	}
-	
-	public static void selectGame(Player p, String name) {
-		select.put(p, name);
-	}
-	
-	public static void selectEnd(Player p, String name) {
-		select_End.put(p, name);
-	}
+    public static String getSelect(Player p) {
+        String str = select.get(p);
+        return str != null ? ConfigUtil.hasGame(str) ? str : null : null;
+    }
 
-	public static Game getGame(OfflinePlayer p) {
-		for(Game g : Game){
-			if(g.getCanJoinPlayers().contains(p)){
-				return g;
-			}
-		}
-		return null;
-	}
-	
-	@SuppressWarnings("deprecation")
-	public static void startGame(String str,Player p){
-		List<OfflinePlayer> list = Lists.newArrayList();
-		Party py = PartyUtil.getTeam(p);
-		if(py != null){
-			for(String name : py.list){
-				list.add(Bukkit.getOfflinePlayer(name));
-			}
-		}else{
-			list.add(p);
-		}
-		
-		
-		Game LastG = null;
-		for(OfflinePlayer op : list){
-			if(ban.contains(op)){
-				TitleApi.sendBar(I18n.t("GameUtil.Info.Running"), p);
-				return;
-			}
-			if(LastG == null){
-				LastG = GameUtil.getGame(op);
-			}
-		}
-		
-		if(LastG != null){
-			TitleApi.sendAction("{\"text\":\"§3Dun> §f" + I18n.t("GameUtil.Info.Invite") + "\","
-					+ "\"clickEvent\":"
-					+ "{"
-					+ "\"action\":\"run_command\",\"value\":\"/party play\""
-					+ "}}",p);
-			return;
-		}
-		
-		ItemStack hand = p.getItemInHand();
-		p.setItemInHand(null);
-		
+    public static String getSelectEnd(Player p) {
+        return select_End.get(p);
+    }
+
+    public static void selectGame(Player p, String name) {
+        select.put(p, name);
+    }
+
+    public static void selectEnd(Player p, String name) {
+        select_End.put(p, name);
+    }
+
+    public static Game getGame(OfflinePlayer p) {
+        for (Game g : gameAll) {
+            if (g.getCanJoinPlayers().contains(p)) {
+                return g;
+            }
+        }
+        return null;
+    }
+
+    @SuppressWarnings("deprecation")
+    public static void startGame(String str, Player p) {
+        List<OfflinePlayer> list = Lists.newArrayList();
+        Party py = PartyUtil.getTeam(p);
+        if (py != null) {
+            for (String name : py.list) {
+                list.add(Bukkit.getOfflinePlayer(name));
+            }
+        } else {
+            list.add(p);
+        }
+
+
+        Game LastG = null;
+        for (OfflinePlayer op : list) {
+            if (ban.contains(op)) {
+                TitleApi.sendBar(I18n.t("GameUtil.Info.Running"), p);
+                return;
+            }
+            if (LastG == null) {
+                LastG = GameUtil.getGame(op);
+            }
+        }
+
+        if (LastG != null) {
+            TitleApi.sendAction("{\"text\":\"§3Dun> §f" + I18n.t("GameUtil.Info.Invite") + "\","
+                    + "\"clickEvent\":"
+                    + "{"
+                    + "\"action\":\"run_command\",\"value\":\"/party play\""
+                    + "}}", p);
+            return;
+        }
+
+        ItemStack hand = p.getItemInHand();
+        p.setItemInHand(null);
+
 //		new Thread(){
 //			public void run(){
-				ban.addAll(list);
-				System.out.println("New dungeon now is start to create!");
-				
-				try {
-					Game G = new Game(str,p,list);
-					G.Start();
-								
-					GameUtil.Game.add(G);
-				} catch (Exception ex) {
-					p.sendMessage("§3Dun> §c" + ex.getMessage());
-					p.setItemInHand(hand);
-				}
-				
-				System.out.println("New dungeon now is stop to create!");
-				ban.removeAll(list);
+        ban.addAll(list);
+        System.out.println("New dungeon now is start to create!");
+
+        try {
+            Game game = new Game(str, p, list);
+            game.start();
+
+            GameUtil.gameAll.add(game);
+        } catch (Exception e) {
+            p.sendMessage("§3Dun> §c" + e.getMessage());
+            Main.PL.getLogger().log(Level.SEVERE, "" + e, e);
+        }
+        p.setItemInHand(hand);
+
+        System.out.println("New dungeon now is stop to create!");
+        ban.removeAll(list);
 //			}
 //		}.start();
-	}
-	
+    }
+
 //	public static Location getSpawnLoc(World w, String Name){
 //		if(Main.c.get("Game." + Name + ".X") == null){
 //			return w.getSpawnLocation();
 //		}else{
-//		    return new Location(w,Main.c.getInt("Game." + Name + ".X"),Main.c.getInt("Game." + Name + ".Y"),Main.c.getInt("Game." + Name + ".Z"));
+//		    return new Location(w,Main.c.getInt("Game." + Name + ".X"),Main.c.getInt("gameAll." + Name + ".Y"),Main.c.getInt("gameAll." + Name + ".Z"));
 //        }
 //	}
 //	
@@ -151,5 +154,4 @@ public class GameUtil {
 //	}
 
 
-	
 }

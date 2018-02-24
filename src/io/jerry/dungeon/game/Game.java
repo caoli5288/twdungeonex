@@ -30,7 +30,7 @@ public class Game{
 	private World world;
 	private Location loc;
 	private List<StopCase> CaseList;
-	private BukkitAPIHelper mmapi;
+	private BukkitAPIHelper mmapi = new BukkitAPIHelper();
 	
 	public Game(String Name,Player main, List<OfflinePlayer> players) throws GameError{
 		if(!ConfigUtil.hasGame(Name)){
@@ -86,7 +86,7 @@ public class Game{
 		return loc;
 	}
 	
-	public void Start() throws GameError{
+	public void start() throws GameError{
 		String worldname = "副本地圖 " + name + " ID" + new Random().nextInt();
 		File WorldFile = new File(worldname);
 		try {
@@ -153,17 +153,17 @@ public class Game{
 		}
 	}
 	
-	public void Stop(){
+	public void stop(){
 		for(StopCase sc : CaseList){
 			if(sc.getType().equals("T")){
 				sc.Handler();
 				return;
 			}
 		}
-		End();
+		end();
 	}
 	
-	public void End(){
+	public void end(){
 		for(StopCase sc : CaseList){
 			sc.Stop();
 		}
@@ -172,7 +172,7 @@ public class Game{
 			T.kickPlayer("Kick with map close");
 		}
 		Main.PL.getServer().unloadWorld(world, true);
-		GameUtil.Game.remove(this);
+		GameUtil.gameAll.remove(this);
 	}
 
 	

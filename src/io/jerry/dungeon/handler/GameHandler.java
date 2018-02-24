@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class GameHandler {
 	public static boolean canContinue(Player p, String options){
-		for(Game g : GameUtil.Game){
+		for(Game g : GameUtil.gameAll){
 			if(g.getWorld().equals(p.getWorld()) && g.getCanJoinPlayers().contains((OfflinePlayer)p)){
 				return ConfigUtil.getOptions(g.getName(), options);
 			}
@@ -23,7 +23,7 @@ public class GameHandler {
 	}
 
 	public static boolean canContinue(World w, String options){
-		for(Game g : GameUtil.Game){
+		for(Game g : GameUtil.gameAll){
 			if(g.getWorld().equals(w)){
 				return ConfigUtil.getOptions(g.getName(), options);
 			}
@@ -59,14 +59,14 @@ public class GameHandler {
 
 		for(StopCase sc : g.getCaseList()){
 			if(sc.getType().equals("PD")){
-				sc.add(null);
+				sc.add("PD");
 			}
 		}
 		return false;
 	}
 
 	public static void Case(String string,World w, String str) {
-		for(Game g : GameUtil.Game){
+		for(Game g : GameUtil.gameAll){
 			if(g.getWorld().equals(w)){
 				for(StopCase sc : g.getCaseList()){
 					if(sc.getType().equals(string)){

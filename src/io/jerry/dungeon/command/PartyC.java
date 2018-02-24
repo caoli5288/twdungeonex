@@ -57,7 +57,7 @@ public class PartyC implements CommandExecutor {
 				return true;
 			}
 
-			if(py.isOwner(p) == false){
+			if(!py.isOwner(p)){
 				p.sendMessage("§3Party> §f你不是隊長");
 				return true;
 			}
@@ -136,28 +136,28 @@ public class PartyC implements CommandExecutor {
 			return true;
 		}
 
-		if(args[0].equalsIgnoreCase("Play")){
+		if(args[0].equalsIgnoreCase("Play")) {
 			Game G = GameUtil.getGame(p);
 
-			if(G == null && py != null){
-				for(String op : py.list){
-					if(G == null){
+			if (G == null && py != null) {
+				for (String op : py.list) {
+					if (G == null) {
 						G = GameUtil.getGame(Bukkit.getOfflinePlayer(op));
 					}
 				}
 			}
 
-			if(G == null){
+			if (G == null) {
 				p.sendMessage("§3Party> §f你/你的隊伍沒有正在進行的副本");
 				return true;
 			}
 
-			if(G.getWorld().equals(p.getWorld())){
+			if (G.getWorld().equals(p.getWorld())) {
 				p.sendMessage("§3Party> §f你正在進行副本,你身處的是副本世界");
 				return true;
 			}
 
-			if(G.getCanJoinPlayers().contains((OfflinePlayer)p)){
+			if (G.getCanJoinPlayers().contains((OfflinePlayer) p)) {
 				p.sendMessage("§3Party> §f你不能進入副本,你已經死亡或副本開啟時你不是隊員");
 				return true;
 			}
@@ -170,7 +170,7 @@ public class PartyC implements CommandExecutor {
 			a = p.getInventory().getContents();
 			b = p.getInventory().getArmorContents();
 			p.getPlayer().teleport(G.getSpawn());
-			if(Inventory){
+			if (Inventory) {
 				p.getPlayer().getInventory().setContents(a);
 				p.getPlayer().getInventory().setArmorContents(b);
 			}

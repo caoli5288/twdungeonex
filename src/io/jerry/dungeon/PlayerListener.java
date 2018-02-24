@@ -63,7 +63,7 @@ public class PlayerListener implements Listener {
 //					list2.add(p.getName());
 //					
 //					Game LastG = null;
-//					for(Game G : GameUtil.Game){
+//					for(Game G : GameUtil.gameAll){
 //						for(String T : G.hasPlayed()){
 //							if(list2.contains(T)){
 //								LastG = G;
@@ -84,7 +84,7 @@ public class PlayerListener implements Listener {
 //					p.setItemInHand(null);
 //					
 //					try {
-//						Game G = new Game(Name,p);
+//						Game G = new gameAll(Name,p);
 //						G.onGameStart(false, list2);
 //									
 //						GameUtil.Game.add(G);
@@ -107,7 +107,7 @@ public class PlayerListener implements Listener {
 	public void Tp(PlayerTeleportEvent e){
 
 //		Player p = e.getPlayer();
-//		for(Game G : GameUtil.Game){
+//		for(Game G : GameUtil.gameAll){
 //				if(G.getWorld().equals(e.getTo().getWorld()) && G.getWorld().equals(e.getFrom().getWorld()) == false){
 //					for(Player T : G.getWorld().getPlayers()){
 //						T.sendMessage("��3Party> ��f" + p.getName() + "�[�J�ƥ�");
@@ -129,7 +129,7 @@ public class PlayerListener implements Listener {
 //	public void UseCommand(PlayerCommandPreprocessEvent e){
 //		Player p = e.getPlayer();
 //		if(p.isOp() == false){
-//			for(Game G : GameUtil.Game){
+//			for(Game G : GameUtil.gameAll){
 //				if(G.getPlayers().contains(p.getName())){
 //					if((e.getMessage().startsWith("/game") || e.getMessage().startsWith("/party")) == false){
 //						e.setCancelled(true);
@@ -145,7 +145,7 @@ public class PlayerListener implements Listener {
 	public void Quit(PlayerQuitEvent e){
 		Player p = e.getPlayer();
 		ChatUtil.leave(p);
-//		for(Game G : GameUtil.Game){
+//		for(Game G : GameUtil.gameAll){
 //			if(G.getWorld().equals(p.getWorld())){
 //				if(Main.c.get("Game." + G.getName() + ".Exit") == null){//TODO
 //					p.performCommand("spawn");
@@ -169,7 +169,7 @@ public class PlayerListener implements Listener {
 //		list2.add(p.getName());
 //		
 //		Game LastG = null;
-//		for(Game G : GameUtil.Game){
+//		for(Game G : GameUtil.gameAll){
 //			for(String T : G.hasPlayed()){
 //				if(list2.contains(T)){
 //					LastG = G;
@@ -194,7 +194,7 @@ public class PlayerListener implements Listener {
 			return;
 		}
 		
-//		for(Game G : GameUtil.Game){
+//		for(Game G : GameUtil.gameAll){
 //			if(G.getWorld().equals(p.getWorld()) ){
 //				p.setHealth(p.getMaxHealth());
 //				if(Main.c.getBoolean("Game." + G.getName() + ".Respawn", true) ){//TODO
@@ -239,7 +239,7 @@ public class PlayerListener implements Listener {
 		
 		Entity E = e.getRightClicked();
 		GameHandler.Case("CE",E.getWorld(),E.getCustomName());
-//		for(Game g : GameUtil.Game){
+//		for(Game g : GameUtil.gameAll){
 //			if(g.getWorld().equals(E.getWorld())){
 //				for(StopCase sc : g.getCaseList()){
 //					if(sc.getType().equals("CE")){
@@ -258,7 +258,7 @@ public class PlayerListener implements Listener {
 
 		Location loc = e.getPlayer().getLocation();
 		GameHandler.Case("TL",loc.getWorld(),loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ());
-//		for(Game g : GameUtil.Game){
+//		for(Game g : GameUtil.gameAll){
 //			if(g.getWorld().equals(loc.getWorld())){
 //				for(StopCase sc : g.getCaseList()){
 //					if(sc.getType().equals("TL")){
@@ -314,7 +314,7 @@ public class PlayerListener implements Listener {
 		
 		Block b = e.getBlock();
 		GameHandler.Case("BB", b.getWorld(), b.getType().toString().toLowerCase());
-//		for(Game g : GameUtil.Game){
+//		for(Game g : GameUtil.gameAll){
 //			if(g.getWorld().equals(b.getWorld())){
 //				for(StopCase sc : g.getCaseList()){
 //					if(sc.getType().equals("BB")){
@@ -357,7 +357,7 @@ public class PlayerListener implements Listener {
 
 			Location loc = b.getLocation();
 			GameHandler.Case("CB", loc.getWorld(), loc.getBlockX() + "," + loc.getBlockY() + "," + loc.getBlockZ());
-//			for(Game g : GameUtil.Game){
+//			for(Game g : GameUtil.gameAll){
 //				if(g.getWorld().equals(loc.getWorld())){
 //					for(StopCase sc : g.getCaseList()){
 //						if(sc.getType().equals("CB")){
@@ -455,7 +455,7 @@ public class PlayerListener implements Listener {
 		}
 		
 		GameHandler.Case("ED", E.getWorld(), E.getCustomName());
-//		for(Game g : GameUtil.Game){
+//		for(Game g : GameUtil.gameAll){
 //			if(g.getWorld().equals(E.getWorld())){
 //				for(StopCase sc : g.getCaseList()){
 //					if(sc.getType().equals("ED")){

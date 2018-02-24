@@ -106,7 +106,7 @@ public class StopCase {
 
 	public void Handler(){
 		new Bonus(Hash.getCanJoinPlayers(), Hash.getName(),Quit);
-		Hash.End();
+		Hash.end();
 	}
 	
 	public void Stop(){
